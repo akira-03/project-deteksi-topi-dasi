@@ -1,43 +1,44 @@
-import { CheckCircle2, XCircle, Activity } from 'lucide-react'
+import { Activity, CircleDashed, ScanLine } from 'lucide-react'
 
-function StatusBox({ title, detected, confidence }) {
+function WaitingBox({ title }) {
   return (
-    <div className={`status-box ${detected ? 'ok' : 'bad'}`}>
-      {detected ? <CheckCircle2 /> : <XCircle />}
+    <div className="status-box waiting">
+      <CircleDashed />
       <div>
         <h3>{title}</h3>
-        <p>{detected ? 'Terdeteksi' : 'Tidak Terdeteksi'}</p>
-        <small>Confidence: {confidence ? `${Math.round(confidence * 100)}%` : '0%'}</small>
+        <p>Menunggu kamera</p>
+        <small>Confidence: —</small>
       </div>
     </div>
   )
 }
 
-export default function DetectionStatus({ data }) {
-  const topi = data?.summary?.topi || { detected: false, confidence: 0 }
-  const dasi = data?.summary?.dasi || { detected: false, confidence: 0 }
-  const lengkap = data?.status === 'Lengkap'
-
+export default function DetectionStatus({ cameraOnline }) {
   return (
-    <section className="card">
+    <section className="card status-card">
       <div className="card-title">
         <div>
+          <span className="eyebrow"><Activity size={13} /> DETECTION STATUS</span>
           <h2>Status Kelengkapan</h2>
-          <p>Simulasi status pemakaian topi dan dasi.</p>
+          <p>Hasil akan tampil saat kamera aktif.</p>
         </div>
-        <Activity />
+        <ScanLine />
       </div>
 
-      <div className={`main-status ${lengkap ? 'complete' : 'incomplete'}`}>
-        {lengkap ? 'LENGKAP' : 'TIDAK LENGKAP'}
+      <div className="main-status standby">
+        <span className="standby-icon"><ScanLine size={24} /></span>
+        <div><small>STATUS SAAT INI</small>MENUNGGU KAMERA</div>
       </div>
 
       <div className="status-grid">
-        <StatusBox title="Topi" detected={topi.detected} confidence={topi.confidence} />
-        <StatusBox title="Dasi" detected={dasi.detected} confidence={dasi.confidence} />
+        <WaitingBox title="Topi" />
+        <WaitingBox title="Dasi" />
       </div>
 
-      {data?.timestamp && <p className="timestamp">Terakhir deteksi: {data.timestamp}</p>}
+      <div className="status-foot">
+        <span className={cameraOnline ? 'online-dot' : 'offline-dot'} />
+        Sistem deteksi siaga dan belum menerima frame
+      </div>
     </section>
   )
 }

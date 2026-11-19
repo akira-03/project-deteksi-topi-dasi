@@ -1,81 +1,36 @@
 import { useEffect, useState } from 'react'
+import { Clock3, Radio, Server, WifiOff } from 'lucide-react'
 import Header from './components/Header'
 import CameraPanel from './components/CameraPanel'
 import DetectionStatus from './components/DetectionStatus'
 import DetectionTable from './components/DetectionTable'
 
-const demoResults = [
-  {
-    status: 'Lengkap',
-    summary: {
-      topi: { detected: true, confidence: 0.94 },
-      dasi: { detected: true, confidence: 0.88 },
-    },
-    detections: [
-      { class: 'topi', confidence: 0.94, xmin: 132, ymin: 48, xmax: 276, ymax: 126 },
-      { class: 'dasi', confidence: 0.88, xmin: 188, ymin: 184, xmax: 226, ymax: 318 },
-    ],
-  },
-  {
-    status: 'Tidak Lengkap',
-    summary: {
-      topi: { detected: true, confidence: 0.91 },
-      dasi: { detected: false, confidence: 0 },
-    },
-    detections: [
-      { class: 'topi', confidence: 0.91, xmin: 139, ymin: 52, xmax: 282, ymax: 130 },
-    ],
-  },
-]
-
 export default function App() {
-  const [data, setData] = useState(() => ({
-    ...demoResults[0],
-    timestamp: new Date().toLocaleString('id-ID'),
-  }))
-  const [loading, setLoading] = useState(false)
-  const [autoDetect, setAutoDetect] = useState(true)
-  const [demoIndex, setDemoIndex] = useState(0)
-
-  function detect() {
-    setLoading(true)
-    window.setTimeout(() => {
-      const nextIndex = (demoIndex + 1) % demoResults.length
-      setDemoIndex(nextIndex)
-      setData({
-        ...demoResults[nextIndex],
-        timestamp: new Date().toLocaleString('id-ID'),
-      })
-      setLoading(false)
-    }, 350)
-  }
+  const [currentTime, setCurrentTime] = useState(new Date())
 
   useEffect(() => {
-    if (!autoDetect) return undefined
-    const timer = window.setInterval(detect, 4000)
+    const timer = window.setInterval(() => setCurrentTime(new Date()), 1000)
     return () => window.clearInterval(timer)
-  }, [autoDetect, demoIndex])
+  }, [])
 
   return (
     <main className="page">
-      <Header />
+      <Header currentTime={currentTime} />
 
-      <div className="system-info">
-        <span>Mode: Demo Vercel</span>
-        <span>Backend: Tidak diperlukan</span>
-        <span>Data: Simulasi di browser</span>
-      </div>
+      <section className="system-info" aria-label="Status sistem">
+        <div className="info-chip live"><Radio size={17} /><span><small>Mode</small>Real-time</span></div>
+        <div className="info-chip offline"><WifiOff size={17} /><span><small>Kamera</small>Offline</span></div>
+        <div className="info-chip"><Server size={17} /><span><small>Sistem</small>Siap dihubungkan</span></div>
+        <div className="info-chip"><Clock3 size={17} /><span><small>Waktu lokal</small>{currentTime.toLocaleTimeString('id-ID')}</span></div>
+      </section>
 
       <div className="grid">
-        <CameraPanel
-          loading={loading}
-          onDetect={detect}
-          autoDetect={autoDetect}
-          setAutoDetect={setAutoDetect}
-        />
-        <DetectionStatus data={data} />
-        <DetectionTable detections={data?.detections || []} />
+        <CameraPanel />
+        <DetectionStatus data={null} cameraOnline={false} />
+        <DetectionTable detections={[]} />
       </div>
+
+      <footer>Monitoring Atribut Sekolah <span>•</span> Sistem real-time</footer>
     </main>
   )
 }

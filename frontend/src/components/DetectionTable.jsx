@@ -3,10 +3,11 @@ export default function DetectionTable({ detections }) {
     <section className="card full-width">
       <div className="card-title">
         <div>
+          <span className="eyebrow">REAL-TIME LOG</span>
           <h2>Detail Objek Terdeteksi</h2>
-          <p>Contoh data objek untuk demonstrasi tampilan.</p>
+          <p>Riwayat akan diperbarui otomatis saat kamera aktif.</p>
         </div>
-        <span className="demo-pill">Data Demo</span>
+        <span className="status-pill neutral">0 OBJEK</span>
       </div>
 
       <div className="table-wrap">
@@ -29,7 +30,11 @@ export default function DetectionTable({ detections }) {
               </tr>
             )) : (
               <tr>
-                <td colSpan="4" className="empty-row">Belum ada objek terdeteksi.</td>
+                <td colSpan="4" className="empty-row">
+                  <span className="empty-table-icon">◎</span>
+                  <strong>Belum ada data deteksi</strong>
+                  <small>Aktifkan kamera untuk mulai menerima hasil real-time.</small>
+                </td>
               </tr>
             )}
           </tbody>
