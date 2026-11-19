@@ -1,5 +1,5 @@
 {
-  "name": "monitoring-topi-dasi-esp32s3",
+  "name": "dashboard-topi-dasi-demo",
   "private": true,
   "version": "1.0.0",
   "type": "module",

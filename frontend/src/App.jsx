@@ -1,72 +1,73 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Header from './components/Header'
 import CameraPanel from './components/CameraPanel'
 import DetectionStatus from './components/DetectionStatus'
 import DetectionTable from './components/DetectionTable'
-import { getHealth, runDetection } from './services/api'
+
+const demoResults = [
+  {
+    status: 'Lengkap',
+    summary: {
+      topi: { detected: true, confidence: 0.94 },
+      dasi: { detected: true, confidence: 0.88 },
+    },
+    detections: [
+      { class: 'topi', confidence: 0.94, xmin: 132, ymin: 48, xmax: 276, ymax: 126 },
+      { class: 'dasi', confidence: 0.88, xmin: 188, ymin: 184, xmax: 226, ymax: 318 },
+    ],
+  },
+  {
+    status: 'Tidak Lengkap',
+    summary: {
+      topi: { detected: true, confidence: 0.91 },
+      dasi: { detected: false, confidence: 0 },
+    },
+    detections: [
+      { class: 'topi', confidence: 0.91, xmin: 139, ymin: 52, xmax: 282, ymax: 130 },
+    ],
+  },
+]
 
 export default function App() {
-  const [health, setHealth] = useState(null)
-  const [data, setData] = useState(null)
+  const [data, setData] = useState(() => ({
+    ...demoResults[0],
+    timestamp: new Date().toLocaleString('id-ID'),
+  }))
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
   const [autoDetect, setAutoDetect] = useState(true)
-  const detectionInProgress = useRef(false)
+  const [demoIndex, setDemoIndex] = useState(0)
 
-  async function detect() {
-    if (detectionInProgress.current || !health?.esp32_capture_url) return
-
-    try {
-      detectionInProgress.current = true
-      setLoading(true)
-      setError('')
-      const result = await runDetection(health?.esp32_capture_url)
-      setData(result)
-    } catch (err) {
-      setError(err.message)
-    } finally {
-      detectionInProgress.current = false
+  function detect() {
+    setLoading(true)
+    window.setTimeout(() => {
+      const nextIndex = (demoIndex + 1) % demoResults.length
+      setDemoIndex(nextIndex)
+      setData({
+        ...demoResults[nextIndex],
+        timestamp: new Date().toLocaleString('id-ID'),
+      })
       setLoading(false)
-    }
+    }, 350)
   }
 
   useEffect(() => {
-    getHealth().then(setHealth).catch(() => setHealth(null))
-  }, [])
-
-  useEffect(() => {
-    if (!autoDetect || !health?.esp32_capture_url) return
-
-    let stopped = false
-    let timer
-
-    async function nextDetection() {
-      await detect()
-      if (!stopped) timer = setTimeout(nextDetection, 750)
-    }
-
-    nextDetection()
-    return () => {
-      stopped = true
-      clearTimeout(timer)
-    }
-  }, [autoDetect, health?.esp32_capture_url])
+    if (!autoDetect) return undefined
+    const timer = window.setInterval(detect, 4000)
+    return () => window.clearInterval(timer)
+  }, [autoDetect, demoIndex])
 
   return (
     <main className="page">
       <Header />
 
-      {error && <div className="error">{error}</div>}
-
       <div className="system-info">
-        <span>Backend: {health?.ok ? 'Aktif' : 'Belum terhubung'}</span>
-        <span>Model best.pt: {health?.model_exists ? 'Ada' : 'Belum ada'}</span>
-        <span>ESP32: {health?.esp32_capture_url || 'Belum dicek'}</span>
+        <span>Mode: Demo Vercel</span>
+        <span>Backend: Tidak diperlukan</span>
+        <span>Data: Simulasi di browser</span>
       </div>
 
       <div className="grid">
         <CameraPanel
-          cameraUrl={health?.esp32_capture_url}
           loading={loading}
           onDetect={detect}
           autoDetect={autoDetect}

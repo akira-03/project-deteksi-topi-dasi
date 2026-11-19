@@ -1,1 +1,0 @@
-Letakkan file hasil training Anda di folder ini dengan nama: best.pt

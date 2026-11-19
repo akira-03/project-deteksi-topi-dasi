@@ -59,6 +59,15 @@ body {
 }
 .camera-frame img { width: 100%; display: block; object-fit: contain; }
 .empty-camera { color: #cbd5e1; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.demo-person { position: relative; width: 220px; height: 300px; }
+.demo-head { position: absolute; width: 76px; height: 82px; border-radius: 50%; background: #f1c7a5; top: 52px; left: 72px; }
+.demo-hat { position: absolute; width: 112px; height: 28px; border-radius: 50% 50% 10px 10px; background: #2563eb; top: 42px; left: 54px; transform: rotate(-3deg); }
+.demo-body { position: absolute; width: 154px; height: 170px; border-radius: 70px 70px 18px 18px; background: #f8fafc; top: 128px; left: 33px; border: 6px solid #cbd5e1; }
+.demo-tie { position: absolute; width: 24px; height: 110px; background: #1d4ed8; top: 142px; left: 98px; clip-path: polygon(50% 0, 100% 18%, 75% 100%, 25% 100%, 0 18%); }
+.demo-label { position: absolute; color: #fff; background: #2563eb; padding: 5px 9px; border-radius: 8px; font-size: 12px; font-weight: 800; }
+.demo-label-hat { top: 12px; right: 0; }
+.demo-label-tie { top: 205px; right: -18px; }
+.demo-pill { background: #dbeafe; color: #1d4ed8; padding: 7px 11px; border-radius: 999px; font-weight: 800; font-size: 12px; }
 .actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; margin-top: 16px; }
 button, .download {
   border: 0; background: #2563eb; color: white; border-radius: 14px; padding: 11px 16px;

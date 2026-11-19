@@ -23,7 +23,7 @@ export default function DetectionStatus({ data }) {
       <div className="card-title">
         <div>
           <h2>Status Kelengkapan</h2>
-          <p>Menentukan apakah siswa lengkap memakai topi dan dasi.</p>
+          <p>Simulasi status pemakaian topi dan dasi.</p>
         </div>
         <Activity />
       </div>
@@ -38,7 +38,6 @@ export default function DetectionStatus({ data }) {
       </div>
 
       {data?.timestamp && <p className="timestamp">Terakhir deteksi: {data.timestamp}</p>}
-      {data?.fps && <p className="timestamp">FPS proses: {data.fps}</p>}
     </section>
   )
 }

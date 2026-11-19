@@ -1,17 +1,12 @@
-import { Download } from 'lucide-react'
-import { downloadLogUrl } from '../services/api'
-
 export default function DetectionTable({ detections }) {
   return (
     <section className="card full-width">
       <div className="card-title">
         <div>
           <h2>Detail Objek Terdeteksi</h2>
-          <p>Daftar bounding box yang dibaca oleh model YOLO.</p>
+          <p>Contoh data objek untuk demonstrasi tampilan.</p>
         </div>
-        <a className="download" href={downloadLogUrl()} target="_blank" rel="noreferrer">
-          <Download size={16} /> Download Log CSV
-        </a>
+        <span className="demo-pill">Data Demo</span>
       </div>
 
       <div className="table-wrap">

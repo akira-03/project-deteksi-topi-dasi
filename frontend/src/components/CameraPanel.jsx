@@ -1,33 +1,31 @@
 import { Camera, RefreshCcw } from 'lucide-react'
 
-export default function CameraPanel({ cameraUrl, loading, onDetect, autoDetect, setAutoDetect }) {
-  const streamUrl = cameraUrl?.replace('/capture', '/stream')
-
+export default function CameraPanel({ loading, onDetect, autoDetect, setAutoDetect }) {
   return (
     <section className="card camera-card">
       <div className="card-title">
         <div>
-          <h2>Live Kamera</h2>
-          <p>Stream ESP32 tampil langsung; status YOLO diperbarui otomatis setelah setiap frame diproses.</p>
+          <h2>Pratinjau Demo</h2>
+          <p>Simulasi antarmuka berjalan sepenuhnya di browser tanpa kamera atau server.</p>
         </div>
         <Camera />
       </div>
 
       <div className="camera-frame">
-        {streamUrl ? (
-          <img src={streamUrl} alt="Live stream ESP32" />
-        ) : (
-          <div className="empty-camera">
-            <Camera size={48} />
-            <p>Menghubungkan ke kamera...</p>
-          </div>
-        )}
+        <div className="demo-person" aria-label="Ilustrasi siswa untuk mode demo">
+          <span className="demo-hat" />
+          <span className="demo-head" />
+          <span className="demo-body" />
+          <span className="demo-tie" />
+          <span className="demo-label demo-label-hat">topi</span>
+          <span className="demo-label demo-label-tie">dasi</span>
+        </div>
       </div>
 
       <div className="actions">
         <button onClick={onDetect} disabled={loading}>
           <RefreshCcw size={16} />
-          {loading ? 'Memproses...' : 'Deteksi Sekarang'}
+          {loading ? 'Memuat...' : 'Ganti Hasil Demo'}
         </button>
         <label className="toggle">
           <input
@@ -35,7 +33,7 @@ export default function CameraPanel({ cameraUrl, loading, onDetect, autoDetect, 
             checked={autoDetect}
             onChange={(e) => setAutoDetect(e.target.checked)}
           />
-          Deteksi real-time
+          Simulasi otomatis
         </label>
       </div>
     </section>
