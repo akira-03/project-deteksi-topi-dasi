@@ -1,0 +1,29 @@
+*.pyc
+__pycache__/
+.env
+.env.*
+!.env.example
+
+# Python and local tooling
+.venv*/
+
+# Frontend dependencies and builds
+frontend/node_modules/
+frontend/dist/
+
+# Generated datasets, training runs, and runtime data
+dataset/
+dataset_backup*/
+runs/
+backend/captures/*
+!backend/captures/.gitkeep
+backend/results/*
+!backend/results/.gitkeep
+backend/logs/*
+!backend/logs/.gitkeep
+backend/models/*.pt
+
+# Local process logs and Vercel metadata
+*.out.log
+*.err.log
+.vercel/
